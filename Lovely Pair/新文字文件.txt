@@ -1,0 +1,25 @@
+#include<iostream>
+#include<vector>
+
+using namespace std;
+
+int main() {
+	int n, i, j, k, v1, v2, count = 0;
+	scanf("%d", &n);
+	vector<vector<int> > tree;
+	tree.resize(n + 1);
+	while(scanf("%d%d", &v1, &v2) != EOF){
+		tree[v1].push_back(v2);
+		tree[v2].push_back(v1);
+	}
+	for (i = 3; i <= n; i++) {
+		for (j = 0; j < tree[i].size(); j++) {
+			int p = tree[i][j];
+			for (k = 0; k < tree[p].size(); k++) {
+				if (tree[p][k] < i) count++;
+				else break;
+			}
+		}
+	}
+	printf("%d\n", count);
+}

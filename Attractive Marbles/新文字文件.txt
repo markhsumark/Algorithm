@@ -1,0 +1,14 @@
+#include<stdio.h>
+int main() {
+	int n, k, max = 0, sum = 0, i, value;
+	scanf("%d%d", &n, &k);
+	for (i = 0; i < n; i++) {
+		scanf("%d", &value);
+		value = (value / k) + (value % k > 0 ? 1 : 0);
+		if (value > max) max = value;
+		sum += value;
+	}
+	sum =  (sum + 1) >> 1;
+	if (max > sum) printf("%d\n", max);
+	else printf("%d\n", sum);
+}

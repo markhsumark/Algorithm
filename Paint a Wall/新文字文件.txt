@@ -1,0 +1,29 @@
+#define XYSIZE 100005
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int find(int p[], int x) {
+	return p[x] == x ? x : p[x] = find(p, p[x]);
+}
+
+int main() {
+	int n, value, i, total = 0;
+	scanf("%d", &n);
+	int *data = (int *)malloc(sizeof(int) * n);
+	int p[XYSIZE];
+	for (i = 0; i < XYSIZE; i++)
+		p[i] = i;
+	for (i = 0; i < n; i++)
+		scanf("%d", &data[i]);
+	for (i = 0; i < n; i++) {
+		scanf("%d", &value);
+		int p1 = find(p, data[i]);
+		int p2 = find(p, value);
+		if (p1 != p2) {
+			p[p1] = p2;
+			total++;
+		}
+	}
+	printf("%d\n", total);
+}

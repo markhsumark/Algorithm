@@ -1,0 +1,56 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct Func {
+	int num;
+	int value;
+};
+
+int compare(Func a, Func b) {
+	return a.value < b.value;
+}
+
+int main() {
+	int n, m, i, s_pos = 0, e_pos = 0, temp = 0, value = 0;
+	long long int total = 0;
+	scanf("%d%d", &n, &m);
+	int *start = (int *)malloc(sizeof(int) * n);
+	int *end = (int *)malloc(sizeof(int) * n);
+	Func *func = (Func *)malloc(sizeof(Func) * m);
+	long long int *ans = (long long int *)malloc(sizeof(long long int) * m);
+	for (i = 0; i < n; i++)
+		scanf("%d", &start[i]);
+	for (i = 0; i < n; i++)
+		scanf("%d", &end[i]);
+	for (i = 0; i < m; i++) {
+		scanf("%d", &func[i].value);
+		func[i].num = i;
+	}
+	sort(start, start + n);
+	sort(end, end + n);
+	sort(func, func + m, compare);
+	for (i = 0; i < m; i++) {
+		while (e_pos < n) {
+			if ((end[e_pos] <= start[s_pos] || s_pos == n) && func[i].value > end[e_pos]) {
+				total += (end[e_pos] - value) * temp;
+				value = end[e_pos];
+				temp--;
+				e_pos += 1;
+			}
+			else if (end[e_pos] >= start[s_pos] && func[i].value > start[s_pos] && s_pos < n) {
+				total += (start[s_pos] - value) * temp;
+				value = start[s_pos];
+				temp++;
+				s_pos += 1;
+			}
+			else break;
+		}
+		total += (func[i].value - value) * temp;
+		value = func[i].value;
+		ans[func[i].num] = total;
+	}
+	for (i = 0; i < m - 1; i++)
+		printf("%lld ", ans[i]);
+	printf("%lld\n", ans[m - 1]);
+}

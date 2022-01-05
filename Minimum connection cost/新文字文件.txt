@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <math.h>
+
+using namespace std;
+
+int find(int parent[], int x) {
+	return x == parent[x] ? x : parent[x] = find(parent, parent[x]);
+}
+
+int main(){
+	int n, i, j, value;
+	long long int total = 0;
+	vector<int> prime_list;
+	bool prime_cmp[1020] = { 0 };
+	for (i = 2; i < 1020; i++) {
+		if (!prime_cmp[i]) prime_list.push_back(i);
+		for (j = 0; i * prime_list[j] < 1020; j++) {
+			prime_cmp[i * prime_list[j]] = true;
+			if (j == prime_list.size() - 1) break;
+		}
+	}
+	map<int,vector<int> > prime;
+	map<int, vector<int> >::iterator prime_iter;
+	scanf("%d", &n);
+	int *uni = (int *)malloc(sizeof(int) * (n + 30));
+	for (i = 0; i < n; i++) {
+		scanf("%d", &value);
+		uni[i] = i;
+		for (j = 0; j < prime_list.size(); j++) {
+			if (value % prime_list[j] == 0) {
+				do {
+					value /= prime_list[j];
+				} while (value % prime_list[j] == 0);
+				prime[prime_list[j]].push_back(i);
+			}
+			if (value != 1 && prime_list[j] > int(sqrt(value))) {
+				prime[value].push_back(i);
+				break;
+			}
+		}
+	}
+	for (prime_iter = prime.begin(); prime_iter != prime.end(); prime_iter++) {
+		if (prime_iter->second.size() <= 1) {
+			continue;
+		}
+		for (i = 1; i < prime_iter->second.size(); i++) {
+			int p1 = find(uni, prime_iter->second[0]);
+			int p2 = find(uni, prime_iter->second[i]);
+			if (p1 > p2) uni[p1] = uni[p2];
+			else uni[p2] = uni[p1];
+			if (p1 != p2) total += prime_iter->first;
+		}
+	}
+	for (i = 1; i < n; i++) {
+		int p = find(uni, i);
+		if (p != 0) {
+			total += 7777777;
+			uni[p] = 0;
+		}
+	}
+	printf("%lld\n", total);
+}

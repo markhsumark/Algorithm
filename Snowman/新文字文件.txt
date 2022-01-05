@@ -1,0 +1,42 @@
+#include <iostream> 
+#include <algorithm> 
+using namespace std; 
+ 
+struct Data { 
+   int num; 
+   long long int value; 
+}; 
+ 
+int compare(Data a, Data b) { 
+ return a.value < b.value; 
+} 
+ 
+int main() { 
+   int n, i, data_p = 0, melt_p = 0; 
+  scanf("%d", &n); 
+   Data *data = (Data *)malloc(sizeof(Data) * n); 
+ long long int *melt = (long long int *)malloc(sizeof(long long int) * n); 
+  int *days = (int *)malloc(sizeof(int) * n); 
+    for (i = 0; i < n; i++) { 
+       scanf("%lld", &data[i].value); 
+     data[i].num = i; 
+       days[i] = -1; 
+  } 
+  scanf("%lld", &melt[0]); 
+   for (i = 1; i < n; i++) { 
+       data[i].value += melt[i - 1]; 
+      scanf("%lld", &melt[i]); 
+       melt[i] += melt[i - 1]; 
+    } 
+  sort(data, data + n, compare); 
+ while (data_p < n && melt_p < n) { 
+       if (melt[melt_p] >= data[data_p].value) { 
+           days[data[data_p].num] = melt_p + 1; 
+           data_p++; 
+      } 
+      else melt_p++; 
+ } 
+  for (i = 0; i < n; i++) 
+     printf("%d ", days[i]); 
+    printf("\n"); 
+}

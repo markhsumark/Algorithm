@@ -1,0 +1,41 @@
+#define min(a, b){a > b ? b : a}
+#define max(a, b){a > b ? a : b}
+#include <iostream>
+using namespace std;
+
+int main() {
+	int i, j, n, H, B, D;
+	cin >> n >> H >> B >> D;
+	int *h = new int[n];
+	int *c = new int[n];
+	for (i = 0; i < n; i++)
+		scanf("%d", &h[i]);
+	for (i = 0; i < n; i++)
+		scanf("%d", &c[i]);
+	long long int **dp = new long long int*[2];
+	for (i = 0; i < 2; i++)
+		dp[i] = new long long int[B + 1];
+	for (i = 0; i <= B; i++)
+		dp[0][i] = -1;
+	dp[0][H - h[0]] = c[0];
+	dp[0][min(H + D, B)] = 0;
+	int pre, now;
+	for (i = 1; i < n; i++) {
+		pre = (i + 1) % 2, now = i % 2;
+		for (j = 0; j <= B; j++)
+			dp[now][j] = -1;
+		for (j = 0; j <= B; j++) {
+			if (dp[pre][j] != -1) {
+				if (j >= h[i]) {
+					dp[now][j - h[i]] = max(dp[now][j - h[i]], dp[pre][j] + c[i]);
+				}
+				dp[now][min(j + D, B)] = max(dp[pre][j], dp[now][min(j + D, B)]);
+			}
+		}
+	}
+	long long int a = 0;
+	for (i = 0; i <= B; i++)
+		if (dp[now][i] > a)
+			a = dp[now][i];
+	printf("%lld\n", a);
+}

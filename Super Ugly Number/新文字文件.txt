@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct HEAP {
+	int idx;
+	int value;
+};
+
+void swap(HEAP &p1, HEAP &p2) {
+	HEAP a = p1;
+	p1 = p2;
+	p2 = a;
+}
+
+void heapify(HEAP heap[], int pos, int total) {
+	int min = pos;
+	int left = pos * 2;
+	int right = pos * 2 - 1;
+	if (left <= total && heap[min].value > heap[left].value) {
+		min = left;
+	}
+	if (right <= total && heap[min].value > heap[right].value) {
+		min = right;
+	}
+	if (min != pos) {
+		swap(heap[pos], heap[min]);
+		heapify(heap, min, total);
+	}
+}
+
+int main() {
+	int n, k, i, count = 1;
+	scanf("%d%d", &n, &k);
+	int *ans = (int *)malloc(sizeof(int)*(n + 2));
+	int *primes = (int *)malloc(sizeof(int)*(k + 2));
+	int *p = (int *)malloc(sizeof(int)*(k + 2));
+	HEAP *heap = (HEAP *)malloc(sizeof(HEAP)*(k + 2));
+	for (i = 1; i <= k; i++) {
+		scanf("%d", &primes[i]);
+		heap[i] = { i, primes[i] };
+		p[i] = 1;
+	}
+	ans[1] = 1;
+	while (count < n) {
+		heapify(heap, 1, k);
+		if (heap[1].value != ans[count]) {
+			count++;
+			ans[count] = heap[1].value;
+		}
+		p[heap[1].idx]++;
+		heap[1].value = ans[p[heap[1].idx]] * primes[heap[1].idx];
+	}
+	printf("%d\n", ans[n]);
+}

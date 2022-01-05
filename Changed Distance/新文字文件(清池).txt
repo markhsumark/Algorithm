@@ -1,0 +1,38 @@
+#include<stdio.h>
+
+int dis[1010][1010];
+
+int main(){
+    int n,m,s,t;
+    scanf("%d%d%d%d",&n,&m,&s,&t);
+    for(int k=1;k<=n;k++){
+        for(int i=1;i<=n;i++){
+            if(k!=i) dis[k][i]=1e9;
+        }
+    }
+    for(int k=1;k<=m;k++){
+        int x,y;
+        scanf("%d%d",&x,&y);
+        dis[x][y]=dis[y][x]=1;
+    }
+    for(int k=1;k<=n;k++){
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=n;j++){
+                if(dis[i][k]+dis[k][j]<dis[i][j]){
+                    dis[i][j]=dis[i][k]+dis[k][j];
+                }
+            }
+        }
+    }
+    int ans=0;
+    int x=dis[s][t];
+    for(int k=1;k<=n;k++){
+        for(int i=k+1;i<=n;i++){
+            if(dis[k][i]==1) continue;
+            int t1=dis[k][s]+dis[i][t]+1;
+            int t2=dis[k][t]+dis[i][s]+1;
+            if(t1<x||t2<x) ans++;
+        }
+    }
+    printf("%d\n",ans);
+}

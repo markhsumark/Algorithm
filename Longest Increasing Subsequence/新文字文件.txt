@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+	int n, i, value;
+	vector<int> data;
+	scanf("%d", &n);
+	scanf("%d", &value);
+	data.push_back(value);
+	for (i = 1; i < n; i++) {
+		scanf("%d", &value);
+		if (value > data.back()) {
+			data.push_back(value);
+		}
+		else {
+			int start = 0, end = data.size() - 1;
+			bool found = false;
+			while (!found && end > start) {
+				int mid = (start + end) / 2;
+				if (value == data.at(mid)) {
+					found = true;
+				}
+				else if (value > data.at(mid)) {
+					start = mid + 1;
+				}
+				else {
+					end = mid;
+				}
+			}
+			if(!found) data[end] = value;
+		}
+	}
+	printf("%d\n", data.size());
+}

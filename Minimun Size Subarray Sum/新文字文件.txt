@@ -1,0 +1,24 @@
+#include <iostream>
+
+int main(){
+	int i, len, compare, right = 0, left = 0, sum = 0, tmp = 0, min = 10000000;
+	scanf("%d", &len);
+	scanf("%d", &compare);
+	int *data = (int *)malloc(sizeof(int)*len);
+	for (i = 0; i < len; i++) {
+		scanf("%d", &data[i]);
+	}
+	while (len > right) {
+		while (sum < compare && len > right) {
+			sum += data[right];
+			tmp++, right++;
+		}
+		while (sum >= compare) {
+			if (tmp < min) min = tmp;
+			sum -= data[left];
+			tmp--, left++;
+		}
+	}
+	if(min == 10000000) printf("0\n");
+	else printf("%d\n", min);
+}

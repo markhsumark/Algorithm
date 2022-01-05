@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+void swap(int &a, int &b) {
+	int tmp = a;
+	a = b;
+	b = tmp;
+}
+
+int partition(int matrix[], int left, int right) {
+	int r = rand() % (right - left + 1) + left;
+	swap(matrix[r], matrix[right]);
+	int a = matrix[right];
+	int p = left, i;
+	for (i = left; i < right; i++) {
+		if (a >= matrix[i]) {
+			swap(matrix[i], matrix[p]);
+			p++;
+		}
+	}
+	swap(matrix[p], matrix[right]);
+	return p;
+}
+
+int select(int matrix[], int left, int right, int goal) {
+	int p = partition(matrix, left, right);
+	if (p == goal) return matrix[p];
+	else if (p > goal) return select(matrix, left, p - 1, goal);
+	else return select(matrix, p + 1, right, goal);
+}
+
+int main() {
+	srand((unsigned)time(NULL));
+	int n, k, i;
+	scanf("%d%d", &n, &k);
+	n = n * n;
+	int *matrix = (int *)malloc(sizeof(int) * (n));
+	for (i = 0; i < n; i++) {
+		scanf("%d", &matrix[i]);
+	}
+	int value = select(matrix, 0, n - 1, k - 1);
+	printf("%d\n", value);
+}

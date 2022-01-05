@@ -1,0 +1,52 @@
+#include <iostream>
+#include <functional>
+#include <set>
+using namespace std;
+
+int main() {
+	multiset<int, greater<int> > data;
+	multiset<int>::iterator iter;
+	int t, count = 1;
+	char command[50];
+	scanf("%d", &t);
+	for (int i = 0; i < t; i++) {
+		scanf("%s", command);
+		if (command[0] == 'D') {
+			int value;
+			scanf("%d", &value);
+			data.insert(value);
+			if (data.size() == 1)
+				iter = data.begin();
+			else if (value > *iter && data.size() > count)
+				iter--;
+			else if (value <= *iter && count >= data.size()) {
+				iter++;
+			}
+		}
+		else if (command[0] == 'M') {
+			if (count > data.size() || count < 1)
+				printf("BAONU\n");
+			else if(count <  data.size()){
+				printf("%d\n", *iter);
+				iter++;
+			}
+			else if(count == data.size()){
+				printf("%d\n", *iter);
+			}
+			count++;
+		}
+		else if (command[0] == '<') {
+			if (count > data.size() || count < 1) {
+				printf("BAONU\n");
+			}
+			else if (count > 1) {
+				printf("%d\n", *iter);
+				iter--;
+			}
+			else if(count == 1) {
+				printf("%d\n", *iter);
+			}
+			count--;
+		}
+	}
+}

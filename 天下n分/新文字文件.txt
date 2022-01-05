@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int find(int country[], int v) {
+	return country[v] == v ? v : country[v] = find(country, country[v]);
+}
+
+int main() {
+	int n, m, i, x, y, k;
+	scanf("%d%d", &n, &m);
+	int *country = (int *)malloc(sizeof(int) * (n + 10));
+	int *fight = (int *)malloc(sizeof(int) * (n + 10));
+	for (k = 0; k <= n; k++) {
+		country[k] = k;
+		fight[k] = 1;
+	}
+	for (k = 0; k < m; k++) {
+		scanf("%d%d%d", &i, &x, &y);
+		x = find(country, x);
+		y = find(country, y);
+		if (i == 1 && x != y) {
+			country[y] = x;
+			fight[x] += fight[y];
+		}
+		else if (i == 1);
+		else if (x == y) printf("peace\n");
+		else if (fight[x] == fight[y]) printf("draw\n");
+		else if (fight[x] > fight[y]) printf("win\n");
+		else if (fight[x] < fight[y]) printf("lose\n");
+	}
+	free(country);
+	free(fight);
+}

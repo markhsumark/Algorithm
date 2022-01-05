@@ -1,0 +1,18 @@
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+int main() {
+	int T;
+	scanf("%d", &T);
+	while (T--) {
+		double x0, y0, r, a, b, c;
+		scanf("%lf%lf%lf%lf%lf%lf", &x0, &y0, &r, &a, &b, &c);
+		double ans = fabs(a * x0 + b * y0 - c) / sqrt(a * a + b * b);
+		if (ans > r)
+			printf("0\n");
+		else if (ans == r)
+			printf("1\n");
+		else printf("2\n");
+	}
+}
